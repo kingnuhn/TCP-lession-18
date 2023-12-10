@@ -5,17 +5,18 @@ using System.Text;
 
 namespace TCP_lession_18
 {
-    internal class Program
+    public class Program
     {
         static void Main(string[] args)
         {
-            const string ip = "107.0.0.1";
-            const int port = 8083;
+            const string ip = "127.0.0.1";
+            const int port = 8080;
 
             var tcpEndPoint = new IPEndPoint(IPAddress.Parse(ip), port);
 
             var tcpSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             tcpSocket.Bind(tcpEndPoint);
+            tcpSocket.Listen(3);
 
             while (true)
             {
@@ -27,9 +28,9 @@ namespace TCP_lession_18
                 do
                 {
                     size = listener.Receive(buffer);
-                    data.Append(Encoding.UTF8.GetString(buffer, 0, size));
-
-                } while (listener.Available > 0);
+                    data.Append(Encoding.UTF8.GetString(buffer, 3, size));
+                }
+                while (listener.Available > 0);
 
                 Console.WriteLine(data);
 
@@ -37,16 +38,6 @@ namespace TCP_lession_18
 
                 listener.Shutdown(SocketShutdown.Both);
                 listener.Close();
-
-
-
-
-
-
-
-
-
-
             }
 
 
